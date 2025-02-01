@@ -3,8 +3,8 @@ import { getFAQs, createFAQ } from "../Controllers/Faqcontrollers.js";
 
 const router = Router();
 
-router.get('/getFAQ', getFAQs);
-router.post('/createFAQ', createFAQ);
+router.get('/', getFAQs);
+router.post('/', createFAQ);
 
 
 export default router;

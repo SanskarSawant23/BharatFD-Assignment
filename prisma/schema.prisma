@@ -17,8 +17,11 @@ datasource db {
 model FAQ{
   id String @id @default(uuid())
   question String
-  answer String
-  question_hindi String?
-  question_bengali String?
+  answer String @db.Text
+  question_hi String?
+  question_bn String?
+  answer_hi String? @db.Text
+  answer_bn String? @db.Text
+
   createdAt DateTime @default(now())
 }
