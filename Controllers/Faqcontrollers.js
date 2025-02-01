@@ -15,7 +15,7 @@ export const getFAQs = async (req, res) =>{
             faqs = faqs.map((faq)=>({
                 id:faq.id,
                 question:faq[`question_${lang}`] || faq.question,
-                answer:faq.answer
+                answer:faq[`answer_${lang}`] || faq.answer
             }))
         }
 
@@ -28,19 +28,30 @@ export const getFAQs = async (req, res) =>{
 
 export const createFAQ = async (req, res) =>{
     const{question, answer} = req.body;
+    
 
     try{
-        const hindiTranslation = await translate(question, {to:'hi'})
-        const bengaliTranslation = await translate(question, {to:"bn"})
-        console.log(hindiTranslation)
+        const hindiTranslationQuestion = await translate(question, {to:'hi'})
+        const bengaliTranslationQuestion = await translate(question, {to:"bn"})
+        const hindiTranslationAnswer = await translate(answer, {to:'hi'});
+        const bengaliTranslationAnswer = await translate(answer, {to:'bn'})
+
+        console.log('Hindi Question:', hindiTranslationQuestion.text);
+        console.log('Bengali Question:', bengaliTranslationQuestion.text);
+        console.log('Hindi Answer:', hindiTranslationAnswer.text);
+        console.log('Bengali Answer:', bengaliTranslationAnswer.text);
+        
         const prisma = new PrismaClient();
 
         const newFAQ = await prisma.fAQ.create({
             data:{
                 question,
                 answer,
-                question_hindi:hindiTranslation.text,
-                question_bengali:bengaliTranslation.text
+                question_hi:hindiTranslationQuestion.text,
+                question_bn:bengaliTranslationQuestion.text,
+                answer_hi: hindiTranslationAnswer.text,
+                answer_bn:bengaliTranslationAnswer.text
+
             }
         })
 
